@@ -1,64 +1,63 @@
 # 3D Indoor Reconstruction
 
-A project for reconstructing indoor 3D space from point cloud data, removing non-structural elements, extracting furniture objects, and preparing the scene for interactive rearrangement.
+![overview](assets/images/overview.png)
+
+This project focuses on reconstructing indoor 3D space from point cloud data and preparing the scene for object-level editing.
+
+It includes room reconstruction, furniture extraction, and separation of individual furniture objects so that they can be moved and rearranged in external tools such as Blender.
 
 ## Overview
 
-This project focuses on reconstructing a clean indoor scene from point cloud data.
+The main goal of this project is to reconstruct a clean indoor scene and make the extracted furniture objects editable as independent point cloud objects.
 
-The current pipeline includes:
+The current workflow includes:
 
-- building a clean room mesh from structural elements such as walls
-- filtering furniture/object points inside the reconstructed room
+- reconstructing the room structure
+- filtering furniture/object point clouds
 - detecting furniture regions with bounding boxes
-- extracting each furniture point cloud as an independent object
-- preparing separated objects for manual editing and rearrangement in Blender
-
-The goal is not only indoor reconstruction, but also object-level scene editing, such as moving and re-placing furniture in a reconstructed 3D room.
-
-## Features
-
-- Clean room mesh generation
-- Structural / non-structural separation
-- Furniture region detection using bounding boxes
-- Object-wise point cloud extraction
-- Export of separated furniture objects as individual `.ply` files
-- Preparation for interactive 3D scene editing in Blender
+- extracting each furniture object as a separate `.ply` file
+- preparing the scene for manual rearrangement
 
 ## Pipeline
 
-### 1. Room reconstruction
-Structural components such as walls are used to generate a clean room mesh.
+![pipeline](assets/images/pipeline.png)
 
-### 2. Furniture filtering
-Only the furniture/object point clouds inside the room are preserved.
+The overall pipeline is:
 
-### 3. Bounding box detection
-Detected furniture regions are represented with bounding boxes.
+1. reconstruct a clean indoor room
+2. detect and filter furniture/object regions
+3. extract furniture point clouds using bounding boxes
+4. save each object separately
+5. edit and rearrange objects in Blender
 
-### 4. Object extraction
-Each bounding box is used to crop the corresponding point cloud region.
-If needed, clustering can be applied inside each box to further separate merged objects.
+## Results
 
-### 5. Export for editing
-Each extracted object is saved as an independent `.ply` file so that it can be treated as a single furniture object in external tools such as Blender.
+### Bounding box detection
+![bbox result](assets/images/result_bbox.png)
 
-## Current Output
+### Separated furniture objects
+![object result](assets/images/result_objects.png)
 
-The current output includes:
+### Rearrangement in Blender
+![blender result](assets/images/blender_result.png)
 
-- reconstructed room mesh
-- filtered furniture point cloud
-- detected furniture bounding boxes
-- separated furniture object `.ply` files
-- object metadata in `.json`
+## Tools
 
-Example output structure:
+- Python
+- Open3D
+- NumPy
+- Blender
 
-```bash
-room_detected_results/
-separated_objects/
-├── object_001.ply
-├── object_002.ply
-├── object_003.ply
-└── objects_meta.json
+## Goal
+
+This project aims to combine:
+
+- 3D indoor reconstruction
+- object-level point cloud extraction
+- interactive furniture rearrangement
+
+so that indoor spaces can be reconstructed and edited more flexibly.
+
+## Notes
+
+Separated furniture objects are exported as individual `.ply` files and can be imported into Blender for direct manipulation.
