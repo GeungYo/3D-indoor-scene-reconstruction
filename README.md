@@ -1,4 +1,3 @@
-# 3D-indoor-scene-reconstruction
 # 3D Indoor Reconstruction
 
 A project for reconstructing indoor 3D space from point cloud data, removing non-structural elements, extracting furniture objects, and preparing the scene for interactive rearrangement.
