@@ -32,14 +32,9 @@ The overall pipeline is:
 
 ## Results
 
-### Bounding box detection
-![bbox result](assets/images/result_bbox.png)
-
 ### Separated furniture objects
 ![object result](assets/images/result_objects.png)
 
-### Rearrangement in Blender
-![blender result](assets/images/blender_result.png)
 
 ## Tools
 
