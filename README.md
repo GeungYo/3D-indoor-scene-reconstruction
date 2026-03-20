@@ -20,8 +20,6 @@ The current workflow includes:
 
 ## Pipeline
 
-![pipeline](assets/images/pipeline.png)
-
 The overall pipeline is:
 
 1. reconstruct a clean indoor room
