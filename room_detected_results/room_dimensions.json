@@ -1,0 +1,101 @@
+{
+    "room_summary": {
+        "shape": "L-shaped (6 corners)",
+        "num_corners": 6,
+        "floor_area_m2": 8.87,
+        "room_height_m": 2.22,
+        "volume_m3": 19.693
+    },
+    "walls": [
+        {
+            "wall_id": 1,
+            "width_m": 2.817,
+            "height_m": 2.22,
+            "area_m2": 6.254,
+            "angle_deg": 0.0,
+            "start_point": [
+                -1.515,
+                -1.932
+            ],
+            "end_point": [
+                1.302,
+                -1.932
+            ]
+        },
+        {
+            "wall_id": 2,
+            "width_m": 0.912,
+            "height_m": 2.22,
+            "area_m2": 2.025,
+            "angle_deg": 90.0,
+            "start_point": [
+                1.302,
+                -1.932
+            ],
+            "end_point": [
+                1.302,
+                -1.02
+            ]
+        },
+        {
+            "wall_id": 3,
+            "width_m": 0.732,
+            "height_m": 2.22,
+            "area_m2": 1.626,
+            "angle_deg": 180.0,
+            "start_point": [
+                1.302,
+                -1.02
+            ],
+            "end_point": [
+                0.57,
+                -1.02
+            ]
+        },
+        {
+            "wall_id": 4,
+            "width_m": 3.023,
+            "height_m": 2.22,
+            "area_m2": 6.712,
+            "angle_deg": 90.0,
+            "start_point": [
+                0.57,
+                -1.02
+            ],
+            "end_point": [
+                0.57,
+                2.003
+            ]
+        },
+        {
+            "wall_id": 5,
+            "width_m": 2.084,
+            "height_m": 2.22,
+            "area_m2": 4.627,
+            "angle_deg": 180.0,
+            "start_point": [
+                0.57,
+                2.003
+            ],
+            "end_point": [
+                -1.515,
+                2.003
+            ]
+        },
+        {
+            "wall_id": 6,
+            "width_m": 3.935,
+            "height_m": 2.22,
+            "area_m2": 8.737,
+            "angle_deg": -90.0,
+            "start_point": [
+                -1.515,
+                2.003
+            ],
+            "end_point": [
+                -1.515,
+                -1.932
+            ]
+        }
+    ]
+}
