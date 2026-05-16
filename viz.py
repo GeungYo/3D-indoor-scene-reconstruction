@@ -1,7 +1,7 @@
 import os
 import open3d as o3d
 
-INPUT_FILE = "0510_room/ply/detected_objects/object_009.ply"   # ""면 실행 시 입력받음
+INPUT_FILE = "0510_room/jimin_room.ply"   # ""면 실행 시 입력받음
 
 def here_dir():
     return os.path.dirname(os.path.abspath(__file__))
