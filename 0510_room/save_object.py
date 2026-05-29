@@ -1,7 +1,9 @@
 # 3
 # 최종 객체 클러스터를 개별 PLY 파일로 저장하는 코드
+# + 원래 좌표 x, y, z를 명시적으로 CSV/JSON에도 같이 저장
 
 import os
+import json
 import numpy as np
 import open3d as o3d
 
@@ -24,6 +26,12 @@ OUT_OBJECT_DIR = os.path.join(
 # 기존 object_001.ply 등이 있으면 지울지 여부
 # True로 두면 실행할 때마다 새 결과만 깔끔하게 남음
 CLEAR_OLD_OBJECT_FILES = True
+
+# ============================================================
+# 추가 저장 옵션
+# ============================================================
+SAVE_META_JSON = True
+SAVE_ORIGINAL_XYZ_CSV = True
 
 # ============================================================
 # DBSCAN
@@ -96,13 +104,15 @@ def load_pcd(path):
         raise RuntimeError("입력 point cloud가 비어있어.")
 
     print(f"[INFO] input: {path}")
+    print(f"[INFO] full path: {full_path}")
     print(f"[INFO] points: {len(pcd.points):,}")
+    print(f"[INFO] has colors: {pcd.has_colors()}")
 
     return pcd
 
 
 # ------------------------------------------------------------
-# 기존 object_###.ply 정리
+# 기존 object_### 파일 정리
 # ------------------------------------------------------------
 def clear_old_object_files():
     out_dir = resolve_path(OUT_OBJECT_DIR)
@@ -114,12 +124,16 @@ def clear_old_object_files():
     removed_count = 0
 
     for filename in os.listdir(out_dir):
-        if filename.startswith("object_") and filename.endswith(".ply"):
+        if filename.startswith("object_") and (
+            filename.endswith(".ply")
+            or filename.endswith(".json")
+            or filename.endswith(".csv")
+        ):
             file_path = os.path.join(out_dir, filename)
             os.remove(file_path)
             removed_count += 1
 
-    print(f"[INFO] old object ply removed: {removed_count}")
+    print(f"[INFO] old object files removed: {removed_count}")
 
 
 # ------------------------------------------------------------
@@ -376,6 +390,86 @@ def bbox_pass_filter(bbox):
 
 
 # ------------------------------------------------------------
+# meta json 저장
+# ------------------------------------------------------------
+def save_object_meta_json(
+    meta_path,
+    base_name,
+    label,
+    points,
+    bbox,
+    has_colors
+):
+    min_bound = points.min(axis=0)
+    max_bound = points.max(axis=0)
+    center_mean = points.mean(axis=0)
+    extent = max_bound - min_bound
+
+    bbox_center = bbox.get_center()
+    bbox_extent = bbox.get_extent()
+
+    meta = {
+        "object_name": base_name,
+        "object_file": f"{base_name}.ply",
+        "source_cluster_label": int(label),
+        "point_count": int(len(points)),
+        "has_colors": bool(has_colors),
+
+        "coordinate_system": "same_as_input_point_cloud",
+        "note": "All saved x, y, z coordinates are kept in the original input point cloud coordinate system. No centering or normalization is applied.",
+
+        "point_min_bound": {
+            "x": float(min_bound[0]),
+            "y": float(min_bound[1]),
+            "z": float(min_bound[2]),
+        },
+        "point_max_bound": {
+            "x": float(max_bound[0]),
+            "y": float(max_bound[1]),
+            "z": float(max_bound[2]),
+        },
+        "point_mean_center": {
+            "x": float(center_mean[0]),
+            "y": float(center_mean[1]),
+            "z": float(center_mean[2]),
+        },
+        "point_extent": {
+            "x": float(extent[0]),
+            "y": float(extent[1]),
+            "z": float(extent[2]),
+        },
+
+        "bbox_center": {
+            "x": float(bbox_center[0]),
+            "y": float(bbox_center[1]),
+            "z": float(bbox_center[2]),
+        },
+        "bbox_extent": {
+            "x": float(bbox_extent[0]),
+            "y": float(bbox_extent[1]),
+            "z": float(bbox_extent[2]),
+        },
+    }
+
+    with open(meta_path, "w", encoding="utf-8") as f:
+        json.dump(meta, f, indent=4, ensure_ascii=False)
+
+
+# ------------------------------------------------------------
+# xyz csv 저장
+# ------------------------------------------------------------
+def save_original_xyz_csv(csv_path, points):
+    np.savetxt(
+        csv_path,
+        points,
+        delimiter=",",
+        header="x,y,z",
+        comments="",
+        fmt="%.8f"
+    )
+
+
+# ------------------------------------------------------------
 # 객체별 PLY 저장
 # ------------------------------------------------------------
 def save_each_object_ply(pcd, labels):
@@ -385,6 +479,7 @@ def save_each_object_ply(pcd, labels):
     valid_labels = [l for l in np.unique(labels) if l >= 0]
 
     saved_count = 0
+    input_has_colors = pcd.has_colors()
 
     for label in valid_labels:
         idx = np.where(labels == label)[0]
@@ -393,6 +488,10 @@ def save_each_object_ply(pcd, labels):
             print(f"[SKIP] cluster {label}: {len(idx)} points")
             continue
 
+        # 중요:
+        # select_by_index는 원본 pcd에서 해당 점만 골라오는 것.
+        # 여기서 좌표를 0,0,0 기준으로 옮기지 않음.
+        # 즉 cluster.points는 원래 point cloud 좌표계 그대로임.
         cluster = pcd.select_by_index(idx)
 
         if len(cluster.points) == 0:
@@ -410,22 +509,58 @@ def save_each_object_ply(pcd, labels):
             continue
 
         saved_count += 1
-        filename = f"object_{saved_count:03d}.ply"
-        save_path = os.path.join(out_dir, filename)
 
+        base_name = f"object_{saved_count:03d}"
+
+        ply_path = os.path.join(out_dir, f"{base_name}.ply")
+        meta_path = os.path.join(out_dir, f"{base_name}_meta.json")
+        xyz_path = os.path.join(out_dir, f"{base_name}_original_xyz.csv")
+
+        points = np.asarray(cluster.points)
+
+        # 1) 객체 PLY 저장
+        # 이 PLY 안에도 x, y, z가 원래 좌표계 기준으로 저장됨.
+        # cluster에 color가 있으면 color도 같이 저장됨.
         ok = o3d.io.write_point_cloud(
-            save_path,
+            ply_path,
             cluster,
             write_ascii=True
         )
 
+        # 2) 원래 x, y, z 좌표 CSV로 별도 저장
+        if SAVE_ORIGINAL_XYZ_CSV:
+            save_original_xyz_csv(
+                xyz_path,
+                points
+            )
+
+        # 3) 객체 위치 정보 JSON으로 저장
+        if SAVE_META_JSON:
+            save_object_meta_json(
+                meta_path=meta_path,
+                base_name=base_name,
+                label=label,
+                points=points,
+                bbox=bbox,
+                has_colors=cluster.has_colors()
+            )
+
         ex, ey, ez = bbox.get_extent()
+        center = bbox.get_center()
 
         print(
-            f"[SAVE] {filename} -> {'OK' if ok else 'FAIL'} | "
+            f"[SAVE] {base_name}.ply -> {'OK' if ok else 'FAIL'} | "
             f"points={len(cluster.points):,}, "
-            f"extent=({ex:.2f}, {ey:.2f}, {ez:.2f})"
+            f"extent=({ex:.2f}, {ey:.2f}, {ez:.2f}), "
+            f"bbox_center=({center[0]:.3f}, {center[1]:.3f}, {center[2]:.3f}), "
+            f"has_colors={cluster.has_colors()}"
         )
+
+        if SAVE_META_JSON:
+            print(f"       meta saved: {base_name}_meta.json")
+
+        if SAVE_ORIGINAL_XYZ_CSV:
+            print(f"       xyz saved : {base_name}_original_xyz.csv")
 
         if SHOW_EACH_OBJECT:
             o3d.visualization.draw_geometries([cluster])

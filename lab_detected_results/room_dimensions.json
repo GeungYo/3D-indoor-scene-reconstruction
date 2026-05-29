@@ -1,0 +1,71 @@
+{
+    "room_summary": {
+        "shape": "rectangular",
+        "num_corners": 4,
+        "floor_area_m2": 22.351,
+        "room_height_m": 2.671,
+        "volume_m3": 59.707
+    },
+    "walls": [
+        {
+            "wall_id": 1,
+            "width_m": 3.246,
+            "height_m": 2.671,
+            "area_m2": 8.671,
+            "angle_deg": 90.0,
+            "start_point": [
+                3.474,
+                -1.679
+            ],
+            "end_point": [
+                3.474,
+                1.567
+            ]
+        },
+        {
+            "wall_id": 2,
+            "width_m": 6.886,
+            "height_m": 2.671,
+            "area_m2": 18.395,
+            "angle_deg": -180.0,
+            "start_point": [
+                3.474,
+                1.567
+            ],
+            "end_point": [
+                -3.412,
+                1.567
+            ]
+        },
+        {
+            "wall_id": 3,
+            "width_m": 3.246,
+            "height_m": 2.671,
+            "area_m2": 8.671,
+            "angle_deg": -90.0,
+            "start_point": [
+                -3.412,
+                1.567
+            ],
+            "end_point": [
+                -3.412,
+                -1.679
+            ]
+        },
+        {
+            "wall_id": 4,
+            "width_m": 6.886,
+            "height_m": 2.671,
+            "area_m2": 18.395,
+            "angle_deg": 0.0,
+            "start_point": [
+                -3.412,
+                -1.679
+            ],
+            "end_point": [
+                3.474,
+                -1.679
+            ]
+        }
+    ]
+}

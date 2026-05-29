@@ -1,0 +1,61 @@
+{
+    "coordinate_system": "same_as_input_point_cloud",
+    "note": "OBJ vertex coordinates are saved in the original point cloud coordinate system. No centering is applied when CENTER_OBJECT is False.",
+    "center_object": false,
+    "voxel_size": 0.01,
+    "color_levels": 8,
+    "input_point_count": 8043,
+    "voxel_count": 8011,
+    "obj_vertex_count": 173112,
+    "obj_triangle_count": 86556,
+    "material_count": 47,
+    "has_color": true,
+    "voxel_grid_origin": {
+        "x": 1.0615700000000001,
+        "y": -1.2028899999999998,
+        "z": 1.80777
+    },
+    "original_point_min_bound": {
+        "x": 1.06657,
+        "y": -1.19789,
+        "z": 1.81277
+    },
+    "original_point_max_bound": {
+        "x": 1.82193,
+        "y": -0.491929,
+        "z": 2.63183
+    },
+    "original_point_mean_center": {
+        "x": 1.403972959094861,
+        "y": -0.732688195449461,
+        "z": 2.160653625512875
+    },
+    "original_point_extent": {
+        "x": 0.75536,
+        "y": 0.7059609999999998,
+        "z": 0.8190599999999999
+    },
+    "obj_mesh_min_bound": {
+        "x": 1.0615700000000001,
+        "y": -1.2028899999999998,
+        "z": 1.80777
+    },
+    "obj_mesh_max_bound": {
+        "x": 1.8315700000000001,
+        "y": -0.4828899999999998,
+        "z": 2.6377699999999997
+    },
+    "obj_mesh_mean_center": {
+        "x": 1.4037757396369372,
+        "y": -0.7328146730439177,
+        "z": 2.16003235038584
+    },
+    "obj_mesh_extent": {
+        "x": 0.77,
+        "y": 0.72,
+        "z": 0.8299999999999996
+    },
+    "source_ply": "0510_room\\ply\\detected_objects\\object_001.ply",
+    "output_obj": "0510_room\\ply\\detected_objects\\obj_models\\object_001_voxel.obj",
+    "output_mtl": "0510_room\\ply\\detected_objects\\obj_models\\object_001_voxel.mtl"
+}
