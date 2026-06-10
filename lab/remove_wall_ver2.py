@@ -17,7 +17,7 @@ PKL_PATH   = "walls_data.pkl"
 # =========================
 # 기본 파라미터
 # =========================
-VOXEL_SIZE = 0.02
+VOXEL_SIZE = 0.01
 REMOVE_R   = 0.08
 STRUCT_DOWNSAMPLE = True
 
@@ -26,7 +26,7 @@ STRUCT_DOWNSAMPLE = True
 # =========================
 REMOVE_SMALL_FRAGMENTS = True
 
-RADIUS_NB_POINTS = 150
+RADIUS_NB_POINTS = 200
 RADIUS = 0.10
 
 # =========================

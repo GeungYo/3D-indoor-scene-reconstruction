@@ -1,7 +1,7 @@
 import os
 import open3d as o3d
 
-INPUT_FILE = "lab/ply/03_objects_after_small_fragment_cleanup.ply"   # ""면 실행 시 입력받음
+INPUT_FILE = "0608_room/final_room_with_object_meshes.ply"   # ""면 실행 시 입력받음
 
 def here_dir():
     return os.path.dirname(os.path.abspath(__file__))
