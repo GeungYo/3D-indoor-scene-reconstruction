@@ -1,0 +1,39 @@
+{
+    "object_name": "object_019",
+    "object_file": "object_019.ply",
+    "source_cluster_label": 19,
+    "point_count": 205,
+    "has_colors": true,
+    "coordinate_system": "same_as_input_point_cloud",
+    "note": "All saved x, y, z coordinates are kept in the original input point cloud coordinate system. No centering or normalization is applied.",
+    "point_min_bound": {
+        "x": 2.49861,
+        "y": -1.33214,
+        "z": 1.00477
+    },
+    "point_max_bound": {
+        "x": 2.62855,
+        "y": -1.21985,
+        "z": 1.16771
+    },
+    "point_mean_center": {
+        "x": 2.561174585365853,
+        "y": -1.2778605853658536,
+        "z": 1.0926124878048777
+    },
+    "point_extent": {
+        "x": 0.12993999999999994,
+        "y": 0.11229,
+        "z": 0.16294000000000008
+    },
+    "bbox_center": {
+        "x": 2.56358,
+        "y": -1.275995,
+        "z": 1.08624
+    },
+    "bbox_extent": {
+        "x": 0.12993999999999994,
+        "y": 0.11229,
+        "z": 0.16294000000000008
+    }
+}

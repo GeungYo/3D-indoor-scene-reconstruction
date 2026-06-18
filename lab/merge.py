@@ -177,8 +177,12 @@ def main():
 
     show_with_big_points(
         geoms,
+<<<<<<< HEAD
         point_size=9.0
 
+=======
+        point_size=5.0
+>>>>>>> 132ce2b84655253cff91e7916a4e96c476d59e23
     )
 
 
